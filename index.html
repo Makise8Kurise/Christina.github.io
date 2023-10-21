@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport",content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" href="./登录注册.css">
+    <link rel="stylesheet" href="./导航栏.css">
+    <title>命运石之门</title>
+</head>
+
+<body>
+    <div class="nav">
+        <ul>
+            <li><a href="./index.html">登录</a></li>
+            <li><a href="./轮播图.html">轮播图</a></li>
+            <li><a href="./弹球游戏.html">弹弹乐</a></li>
+            <li><a href="./关于我.html">关于我</a></li>
+            <div class="nav-box"></div>
+        </ul>
+    </div>
+
+    <div class="shell" id="shell">
+        <div class="container a-container" id="a-container">
+            <form action="" method="" class="form" id="a-form">
+                <h2 class="form_title title">创建账号</h2>
+                <span class="form_span">邮箱注册</span>
+                <input type="text" class="form_input" placeholder="Name">
+                <input type="text" class="form_input" placeholder="Email">
+                <input type="text" class="form_input" placeholder="Password">
+                <button class="form_button button submit sign-up-button">SIGN UP</button>
+            </form>
+        </div>
+
+        <div class="container b-container" id="b-container">
+            <form action="" method="" class="form" id="b-form">
+                <h2 class="form_title title">登录账号</h2>
+                <span class="form_span">邮箱登录</span>
+                <input type="text" class="form_input" placeholder="Email">
+                <input type="text" class="form_input" placeholder="Password">
+                <a href="" class="form_link">忘记密码？</a>
+                <button class="form_button button submit sign-in-button">SIGN IN</button>
+            </form>
+        </div>
+
+        <div class="switch" id="switch-cnt">
+            <div class="switch_circle"></div>
+            <div class="switch_circle switch_circle-t"></div>
+            <div class="switch_container" id="switch-c1">
+                <h2 class="switch_title title" style="letter-spacing: 0;">Welcome Back！</h2>
+                <p class="switch_description description">已经有一个账号？赶快进入命运石之门世界线吧！</p>
+                <button class="switch_button button switch-btn">SIGN IN</button>
+            </div>
+
+            <div class="switch_container is-hidden" id="switch-c2">
+                <h2 class="switch_title title" style="letter-spacing: 0;">GENSHIN ON！</h2>
+                <p class="switch_description description">去注册一个账号！然后进入命运石之门世界线吧！</p>
+                <button class="switch_button button switch-btn">SIGN UP</button>
+            </div>
+        </div>
+    </div>
+    <div>
+
+    </div>
+
+</body>
+
+</html>
+<script>
+    let Shell = document.getElementById("shell");
+    let switchCtn = document.querySelector("#switch-cnt");
+    let switchC1 = document.querySelector("#switch-c1");
+    let switchC2 = document.querySelector("#switch-c2");
+    let switchCircle = document.querySelectorAll(".switch_circle");
+    let switchBtn = document.querySelectorAll(".switch-btn");
+    let aContainer = document.querySelector("#a-container");
+    let bContainer = document.querySelector("#b-container");
+    let Container = document.querySelector("#container");
+
+    let changeForm = (e) => {
+        // 修改类名
+        switchCtn.classList.add("is-gx");
+        setTimeout(function () {
+            switchCtn.classList.remove("is-gx");
+        }, 1500)
+        switchCtn.classList.toggle("is-txr");
+        switchCircle[0].classList.toggle("is-txr");
+        switchCircle[1].classList.toggle("is-txr");
+        switchC1.classList.toggle("is-hidden");
+        switchC2.classList.toggle("is-hidden");
+        aContainer.classList.toggle("is-txl");
+        bContainer.classList.toggle("is-txl");
+        bContainer.classList.toggle("is-z");
+    }
+    // 点击切换
+    let shell = (e) => {
+        for (var i = 0; i < switchBtn.length; i++)
+            switchBtn[i].addEventListener("click", changeForm)
+    }
+    window.addEventListener("load", shell);
+
+    changeForm();
+
+    function showModal(message) {
+        // 创建模态框元素
+        let modal = document.createElement("div");
+        modal.classList.add("modal");
+        modal.textContent = message;
+
+        // 添加到页面中
+        document.body.appendChild(modal);
+
+        // 1.5秒后关闭模态框
+        setTimeout(function () {
+            modal.style.opacity = "0";
+            setTimeout(function () {
+                modal.remove();
+            }, 1000);
+        }, 1500);
+    }
+
+    let switchC1Form = document.querySelector("#a-form");
+    let switchC2Form = document.querySelector("#b-form");
+    let signUpButton = document.querySelector(".sign-up-button");
+    let signInButton = document.querySelector(".sign-in-button");
+
+    let validateName = (name) => {
+        if (name.length < 3 || name.length > 20) {
+            return false;
+        }
+        return true;
+    }
+
+    let validateEmail = (email) => {
+        // 简单的邮箱格式验证
+        let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            return false;
+        }
+        return true;
+    }
+
+    let validatePassword = (password) => {
+        if (password.length < 6 || password.length > 20) {
+            return false;
+        }
+        return true;
+    }
+
+    signUpButton.addEventListener("click", function (e) {
+        e.preventDefault();
+        let name = switchC1Form.querySelector("input[placeholder='Name']").value;
+        let email = switchC1Form.querySelector("input[placeholder='Email']").value;
+        let password = switchC1Form.querySelector("input[placeholder='Password']").value;
+
+        if (!validateName(name)) {
+            showModal("请输入3到20个字符的名称！");
+            return;
+        }
+        if (!validateEmail(email)) {
+            showModal("请输入有效的邮箱地址！");
+            return;
+        }
+        if (!validatePassword(password)) {
+            showModal("请输入6到20个字符的密码！");
+            return;
+        }
+
+        sessionStorage.setItem("name", name);
+        sessionStorage.setItem("email", email);
+        sessionStorage.setItem("password", password);
+        showModal("注册成功！");
+        changeForm();
+    });
+
+    signInButton.addEventListener("click", function (e) {
+        e.preventDefault();
+        let storedEmail = sessionStorage.getItem("email");
+        let storedPassword = sessionStorage.getItem("password");
+        let email = switchC2Form.querySelector("input[placeholder='Email']").value;
+        let password = switchC2Form.querySelector("input[placeholder='Password']").value;
+
+        if (!validateEmail(email)) {
+            showModal("请输入有效的邮箱地址！");
+            return;
+        }
+        if (!validatePassword(password)) {
+            showModal("请输入6到20个字符的密码！");
+            return;
+        }
+
+        if (email === storedEmail && password === storedPassword) {
+            showModal("恭喜你，登录成功!");
+            Shell.classList.add("fade-out");
+            document.querySelector('.fade-out').addEventListener('animationend', function () {
+                this.style.display = 'none';
+            },);
+            setTimeout(function () {
+                window.location.href = "./关于我.html";
+            }, 1500);
+        } else {
+            showModal("信息错误，登录失败！");
+        }
+    });
+</script>
+</body>
+
+</html>

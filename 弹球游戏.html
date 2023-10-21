@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport",content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" href="./导航栏.css">
+    <link rel="stylesheet" href="./弹球游戏.css">
+    <title>弹弹乐</title>
+</head>
+
+<body>
+    <div class="nav">
+        <ul>
+            <li><a href="./index.html">登录</a></li>
+            <li><a href="./轮播图.html">轮播图</a></li>
+            <li><a href="./弹球游戏.html">弹弹乐</a></li>
+            <li><a href="./关于我.html">关于我</a></li>
+            <div class="nav-box"></div>
+        </ul>
+    </div>
+
+    <div id="board">
+        <div id="paddle"></div>
+        <div id="ball"></div>
+        <div id="brick-container"></div>
+        <div id="score">0</div>
+        <button class="btn" id="btn">START</button>
+    </div>
+</body>
+
+<script>
+    let board, paddle, ball, brickCount, paddleX, ballX, ballY;
+    let brickWidth = 75, brickHeight = 20, brickPadding = 10, brickOffsetTop = 30, brickOffsetLeft = 30;
+    let brickRowCount = 4, brickColumnCount = 5;
+    let x = 3, y = -3;
+    let leftPressed, rightPressed;
+    let score = 0; // 定义分数
+    let gameLoop; // 定义全局变量gameLoop
+    const btn = document.getElementById("btn");
+
+    function startGame() {
+        // 分数为0
+        score = 0;
+        document.getElementById("score").innerHTML = score;
+
+        // 初始化板子和球
+        board = document.getElementById("board");
+        paddle = document.getElementById("paddle");
+        ball = document.getElementById("ball");
+        paddleX = board.offsetWidth / 2 - paddle.offsetWidth / 2 ;
+        ballX = board.offsetWidth / 2 - ball.offsetWidth / 2;
+        ballY = board.offsetHeight / 2 - ball.offsetHeight / 2;
+        ball.style.left = ballX + "px";
+        ball.style.top = ballY + "px";
+
+        // 初始化砖块
+        const brickContainer = document.getElementById("brick-container");
+        brickContainer.innerHTML = "";
+        brickCount = 0;
+        for (let i = 0; i < brickRowCount; i++) {
+            for (let j = 0; j < brickColumnCount; j++) {
+                const brick = document.createElement("div");
+                brick.className = "brick";
+                brick.style.left = j * (brickWidth + brickPadding) + brickOffsetLeft + "px";
+                brick.style.top = i * (brickHeight + brickPadding) + brickOffsetTop + "px";
+                brickContainer.appendChild(brick);
+                brickCount++;
+            }
+        }
+        leftPressed = false;
+        rightPressed = false;
+        document.addEventListener("keydown", keyDownHandler, false);
+        document.addEventListener("keyup", keyUpHandler, false);
+
+    }
+
+
+    // 点击事件
+    btn.addEventListener("click", function () {
+        gameLoop = setInterval(update, 20);
+    });
+
+    function keyDownHandler(e) {
+        if (e.keyCode === 37) {
+            leftPressed = true;
+        } else if (e.keyCode === 39) {
+            rightPressed = true;
+        }
+    }
+
+    function keyUpHandler(e) {
+        if (e.keyCode === 37) {
+            leftPressed = false;
+        } else if (e.keyCode === 39) {
+            rightPressed = false;
+        }
+    }
+
+    function update() {
+        // 更新球的位置
+        ballX += x;
+        ballY += y;
+        ball.style.left = ballX + "px";
+        ball.style.top = ballY + "px";
+
+        // 判断球是否碰到边界
+        if (ballX < 0 || ballX + ball.offsetWidth > board.offsetWidth) {
+            x = -x;
+        }
+        if (ballY < 0) {
+            y = -y;
+        } else if (ballY + ball.offsetHeight > board.offsetHeight) {
+            // 判断球是否碰到底部，游戏结束
+            clearInterval(gameLoop);
+            alert("游戏结束，你的得分是：" + score);
+            startGame();
+        }
+
+        // 判断球是否碰到挡板
+        if (ballY + ball.offsetHeight > board.offsetHeight - paddle.offsetHeight && ballX + ball.offsetWidth > paddleX && ballX < paddleX + paddle.offsetWidth) {
+            y = -y;
+        }
+
+        // 更新挡板位置
+        if (leftPressed && paddleX > 5) {
+            paddleX -= 5;
+        } else if (rightPressed && paddleX + paddle.offsetWidth < board.offsetWidth) {
+            paddleX += 5;
+        }
+        paddle.style.left = paddleX + "px";
+        console.log(brickCount, 'hasdjhsdaf')
+
+        // 判断球是否碰到砖块
+        const bricks = document.getElementsByClassName("brick");
+        for (let i = 0; i < bricks.length; i++) {
+            const brick = bricks[i];
+            if (ballY < brick.offsetTop + brickHeight && ballY + ball.offsetHeight > brick.offsetTop && ballX + ball.offsetWidth > brick.offsetLeft && ballX < brick.offsetLeft + brickWidth) {
+                y = -y;
+                brick.style.display = "none";
+                brickCount--;
+                score += 20; // 碰到砖块加20分
+                document.getElementById("score").innerHTML = score;
+                if (brickCount === 0) {
+                    clearInterval(gameLoop);
+                    alert("恭喜你赢得了游戏，你的得分是：" + score);
+                    startGame();
+                }
+            }
+        }
+
+    }
+    startGame();
+</script>
+
+</html>

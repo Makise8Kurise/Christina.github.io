@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>用户信息</title>
+    <style>
+        body {
+            background-image: linear-gradient(to bottom right,
+            #91defe,
+            #99c0f9,
+            #bdb6ec,
+            #d7b3e3,
+            #efb3d5,
+            #f9bccc);
+            font-family: Arial, sans-serif;
+            margin: 0;
+            height: 100vh;
+            padding: 30px;
+        }
+
+        h1 {
+            color: #c10d0d;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        #fetchUserData {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            animation: scaleIn 0.5s ease-in-out;
+        }
+
+        #fetchUserData:hover {
+            background-color: #45a049;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            animation: slideIn 1s ease-in-out;
+        }
+
+        th, td {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes scaleIn {
+            0% { transform: scale(0); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes slideIn {
+            0% { transform: translateX(-20px); }
+            100% { transform: translateX(0); }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>用户信息</h1>
+
+    <table>
+        <tr>
+            <th>创建时间</th>
+            <td id="createdAt"></td>
+        </tr>
+        <tr>
+            <th>名字</th>
+            <td id="name"></td>
+        </tr>
+        <tr>
+            <th>头像ID</th>
+            <td id="avatar"></td>
+        </tr>
+        <tr>
+            <th>邮箱</th>
+            <td id="email"></td>
+        </tr>
+        <tr>
+            <th>密码</th>
+            <td id="password"></td>
+        </tr>
+        <tr>
+            <th>ID</th>
+            <td id="id"></td>
+        </tr>
+    </table>
+
+    <button id="fetchUserData">获取用户数据</button>
+    <li><a href="./关于我.html">返回</a></li>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var fetchButton = document.getElementById('fetchUserData');
+            fetchButton.addEventListener('click', function () {
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', 'https://631333b8a8d3f673ffc6500b.mockapi.io/users');
+                xhr.onload = function () {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        var data = JSON.parse(xhr.responseText);
+                        var randomIndex = Math.floor(Math.random() * data.length);
+                        var user = data[randomIndex];
+
+                        document.getElementById('createdAt').textContent = user.createdAt;
+                        document.getElementById('name').textContent = user.name;
+                        document.getElementById('avatar').textContent = user.avatar;
+                        document.getElementById('id').textContent = user.id;
+
+                        if (user.email) {
+                            document.getElementById('email').textContent = user.email;
+                        } else {
+                            document.getElementById('email').textContent = "无";
+                        }
+
+                        if (user.password) {
+                            document.getElementById('password').textContent = user.password;
+                        } else {
+                            document.getElementById('password').textContent = "无";
+                        }
+                    } else {
+                        alert("无法获取用户数据");
+                    }
+                };
+                xhr.onerror = function () {
+                    alert("无法获取用户数据");
+                };
+                xhr.send();
+            });
+        });
+    </script>
+</body>
+</html>

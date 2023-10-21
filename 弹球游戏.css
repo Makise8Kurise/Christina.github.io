@@ -1,0 +1,75 @@
+* {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-decoration: none;
+}
+
+body {
+    background-image: linear-gradient(to bottom right,
+    #91defe,
+    #99c0f9,
+    #bdb6ec,
+    #d7b3e3,
+    #efb3d5,
+    #f9bccc);
+    display: flex;
+    justify-content: center;
+    font-size: 12px;
+    background-color: #ecf0f3;
+    color: #a0a5a8;
+    overflow: hidden;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    height: 100vh;
+}
+
+#board {
+    align-items: center;
+    top: 1vh;
+    width: 480px;
+    height: 350px;
+    border: 1px solid black;
+    position: relative;
+    margin: 0 auto;
+}
+
+#paddle {
+    width: 80px;
+    height: 15px;
+    background-image: url(./img/石头门图标.png);
+    background-size: 100% 100%;
+    position: absolute;
+    bottom: 0;
+}
+
+#ball {
+    border-radius: 25px;
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    position: absolute;
+}
+
+.brick {
+    width: 75px;
+    height: 20px;
+    background-color: rgb(248, 92, 113);
+    border: 1px solid black;
+    position: absolute;
+}
+
+#brick-container {
+    margin-top: 30px;
+}
+
+#score {
+    margin-top: 49%;
+    font-size: 24px;
+    text-align: center;
+}
+.btn{
+    margin-top: 25%;
+    font-size: 20px;
+}

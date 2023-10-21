@@ -1,0 +1,90 @@
+body {
+    background: url(./img/背景.jpg) no-repeat center center;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.box {
+    position: relative;
+    color: rgb(6, 173, 151);
+    height: 500px;
+    width: 50vw;
+    background: rgba(20, 1, 1, 0.4);
+    padding: 40px;
+    text-align: center;
+    margin: auto;
+    margin-top: 5%;
+}
+
+.box .box-img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+}
+
+.box h1 {
+    font-size: 50px;
+    letter-spacing: 4px;
+    font-weight: 400;
+}
+
+.box h2 {
+    font-size: 30px;
+    letter-spacing: 3px;
+    font-weight: 300;
+
+}
+
+.one {
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: 600;
+    color: grey;
+}
+
+.one:hover {
+    color: rgb(6, 173, 151);
+}
+
+h2 {
+    font-size: 100px;
+}
+
+h2 a {
+    text-decoration: none;
+    color: white;
+}
+
+h2 span {
+    transition: 0.5s;
+}
+
+h2:hover span:nth-child(1) {
+    margin-right: 10px;
+}
+
+h2:hover span:nth-child(2) {
+    margin-left: 30px;
+}
+
+h2 span:nth-child(1)::after {
+    opacity: 0;
+    transition: 2s;
+}
+
+h2:hover span:nth-child(1)::after {
+    content: "'";
+    opacity: 1;
+}
+
+h2:hover span {
+    color: white;
+    text-shadow: 0 0 10px #fff,
+        0 0 20px #fff,
+        0 0 40px #fff,
+        0 0 80px #fff;
+
+
+}

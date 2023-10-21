@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport",content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+    <title>命运石之门</title>
+    <link rel="stylesheet" href="./导航栏.css">
+    <link rel="stylesheet" href="./轮播图.css">
+</head>
+
+<body>
+    <div class="nav">
+        <ul>
+            <li><a href="./index.html">登录</a></li>
+            <li><a href="./轮播图.html">轮播图</a></li>
+            <li><a href="./弹球游戏.html">弹弹乐</a></li>
+            <li><a href="./关于我.html">关于我</a></li>
+            <div class="nav-box"></div>
+        </ul>
+    </div>
+    <div class="main" id="stop">
+        <div class="photo photo1" id="p_0"></div>
+        <div class="photo photo2" id="p_1"></div>
+        <div class="photo photo3" id="p_2"></div>
+        <div class="photo photo4" id="p_3"></div>
+        <div class="photo photo5" id="p_4"></div>
+        <div class="button">
+            <button class="button1 prev"><<button>
+            <button class="button2 next">></button>
+        </div>
+    </div>
+</body>
+
+</html>
+<script>
+    //定位置 
+    const STYLE_LIST = [
+        'scale(0.5) translateZ(-2px) translateX(150%)',
+        'scale(0.5) translateZ(-1px) translateX(70%)',
+        'scale(0.5) translateZ(0px) translateX(0%)',
+        'scale(0.5) translateZ(-1px) translateX(-70%)',
+        'scale(0.5) translateZ(-2px) translateX(-150%)'
+    ];
+
+    let PHOTO_LIST = ['p_0', 'p_1', 'p_2', 'p_3', 'p_4'];
+
+    const MID_INDEX = Math.floor(PHOTO_LIST.length / 2);
+
+    let INTERVAL_ID = null;
+
+    //设置某张图片为顶层
+    let setToTop = function (id, direction) {
+        // 如果没有指定id，则根据direction确定要置顶的图片
+        if (!id) {
+            id = (direction === "next") ? PHOTO_LIST[MID_INDEX - 1] : PHOTO_LIST[MID_INDEX + 1];
+        }
+
+        // 计算id所在下标与中位坐标的距离
+        const index = PHOTO_LIST.indexOf(id);
+        if (index == -1) {
+            return;
+        }
+        const dis = index - MID_INDEX;
+
+        // 移位
+        let Arr = [];
+        for (let i = 0; i < PHOTO_LIST.length; i++) {
+            let _index = ((i - dis) + PHOTO_LIST.length) % PHOTO_LIST.length;
+            Arr[_index] = PHOTO_LIST[i];
+        }
+        PHOTO_LIST = Arr;
+
+        // 更新图片样式
+        for (let i = 0; i < PHOTO_LIST.length; i++) {
+            window.requestAnimationFrame(() => {
+                document.getElementById(PHOTO_LIST[i]).style.transform = STYLE_LIST[i];
+            });
+        }
+    }
+
+    let setToTopr = function (id) {
+        setToTop(id, "next");
+    }
+
+    let setToTopl = function (id) {
+        setToTop(id, "prev");
+    }
+
+    // 调用setToTopr和setToTopl函数
+    setToTopr('p_1');
+
+    // 右按钮
+    let next = document.querySelector('.next')
+    next.addEventListener('click', function () {
+        setToTopr();
+    })
+
+    // 左按钮
+    let prev = document.querySelector('.prev')
+    prev.addEventListener('click', function () {
+        setToTopl();
+    })
+
+    // 自动播放
+    timer = setInterval(() => {
+        setToTopr();
+    }, 4000)
+    // 鼠标摸上去暂停轮播
+    const button = document.querySelector('.button')
+    button.addEventListener('mouseenter', function () {
+        clearInterval(timer)
+    })
+    // 鼠标移开继续轮播
+    button.addEventListener('mouseleave', function () {
+        timer = setInterval(() => {
+            setToTopr();
+        }, 4000)
+    })
+</script>
